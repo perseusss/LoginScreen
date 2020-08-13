@@ -3,10 +3,11 @@ import firebase from 'firebase';
 import  {Text, View, StyleSheet, Button} from  'react-native';
 import Banner from './components/banner';
 import LoginForm from './components/LoginForm';
+import {Spinner} from './components/common'
 
  class App extends Component {
      state = {
-         loggedIn : false,
+         loggedIn :null,
      }
 
      componentDidMount(){
@@ -33,15 +34,21 @@ import LoginForm from './components/LoginForm';
      renderContent(){
          const{loggedIn} = this.state;
 
-         if (loggedIn) {
-             return(
-                <Button title = 'logout' color = 'blue' />
+        switch(loggedIn){
+            case true:
+            return(
+                <Button onPress = {() => firebase.auth().signOut()} title = 'logout' color = 'blue' />
              )
-         }else{
-             return(
-                <LoginForm />
-             )
-         }
+            case false:
+                return(
+                    <LoginForm />
+                 )
+            default:
+                return(
+                    <Spinner />
+                )
+        }
+        
      }
     render(){
         return(
